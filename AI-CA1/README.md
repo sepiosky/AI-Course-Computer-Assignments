@@ -10,19 +10,19 @@ dropping balls doesnt count in it moves. the goal is to each ball to a certain c
 
 test cases describe environment in bellow format:
 
-&emsp;- __$N$ & $M$__ : number of rows and columns of maze  
+&emsp;- $N$ & $M$ : number of rows and columns of maze  
 
-&emsp;- __$S_i$ & $S_j$__ : start position
+&emsp;- $S_i$ & $S_j$ : start position
 
-&emsp;- __$F_i$ & $F_j$__ : finish position
+&emsp;- $F_i$ & $F_j$ : finish position
 
-&emsp;- __$C$__ : knapsack capacity
+&emsp;- $C$ : knapsack capacity
 
-&emsp;- __$K$__ : number of balls
+&emsp;- $K$ : number of balls
 
-&emsp;- __$K$__ lines containing two pairs of numbers describing initial position and desired position for each ball
+&emsp;- $K$ lines containing two pairs of numbers describing initial position and desired position for each ball
 
-&emsp;- __$N$__ row of __<font color=red>"-"</font>__ for open cells and __<font color=red>"*"</font>__ for blocked cells describing maze's map
+&emsp;- $N$ row of __<font color=red>"-"</font>__ for open cells and __<font color=red>"*"</font>__ for blocked cells describing maze's map
 
 ### 1.0 Imports
 
