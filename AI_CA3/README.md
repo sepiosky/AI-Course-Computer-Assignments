@@ -6,8 +6,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from bidi.algorithm import get_display                                      
-from arabic_reshaper import reshape 
+from bidi.algorithm import get_display
+from arabic_reshaper import reshape
 import csv, copy, math, shutil,random
 from hazm import Normalizer, Stemmer, Lemmatizer, utils, word_tokenize
 from nltk import RegexpTokenizer, download
@@ -35,7 +35,7 @@ HTML('<style>{}</style>'.format(CSS))
 
 # Aim of Project
 
-In this project, we apply the Naïve Bayes classifier for categorizing six types of books based on their title and description. The methodology and codes are all explained throughout this report and the effect of several related parameters and techniques are discussed. 
+In this project, we apply the Naïve Bayes classifier for categorizing six types of books based on their title and description. The methodology and codes are all explained throughout this report and the effect of several related parameters and techniques are discussed.
 
 # 1. Dataset
 
@@ -56,19 +56,6 @@ train_data.groupby(['categories']).count()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -130,19 +117,6 @@ train_data.head(10)
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -225,7 +199,7 @@ train_data.head(10)
 
 The bag of words model is a very common feature extraction procedure for sentences and documents. In this approach, we look at the histogram of the words within the text, i.e. considering each word count as a feature. It is called a "bag" of words as any information about the order or structure of words in the document is discarded and the model is only concerned with whether known words occur in the document, not where in the document.
 
-As was discussed, the bag of words model deals with individual words in a text. Therefore, in the beginning, each book's title and description are splitted into its words. 
+As was discussed, the bag of words model deals with individual words in a text. Therefore, in the beginning, each book's title and description are splitted into its words.
 
 Some sources of irrelevancy exist in descriptions and for increasing the performance of the algorithm, it is important to remove or at least reduce these sources. In the two next sections, we will discuss different sources of irrelevancy and ways for removing them from the descriptions.
 
@@ -242,7 +216,7 @@ An important fact to deal with is the irrelevancies in descriptions. These irrel
 3. **Unknown Words**:  The words that occur in our test data but are not in our vocabulary at all because they did not occur in any training document in any class are unknonw words. The unknown word solution for such unknown words is to ignore them (remove them) from the test document and not include any probability for them at all
 
 there are some other irrelevancies like difference of upper case and lower case characters that are not the case in models used on persian texts.
-We will discuss the effect of removing each of the mentioned probable irrelevancies on the final performance of the algorithm.   
+We will discuss the effect of removing each of the mentioned probable irrelevancies on the final performance of the algorithm.
 
 ### 2.2.1 Ways of Removing Irrelevancies <a id="Q1-1"></a>
 
@@ -260,7 +234,7 @@ In the case of the inflections, there are two main methods for removing words in
 
 Lemmatization, unlike Stemming, reduces the inflected words properly ensuring that the root word belongs to the language. In Lemmatization root word is called Lemma. A lemma (plural lemmas or lemmata) is the canonical form, dictionary form, or citation form of a set of words.
 
-we will use both of the mentioned methods for removing the infection words and measure the effect of both on the final results of the classifier. 
+we will use both of the mentioned methods for removing the infection words and measure the effect of both on the final results of the classifier.
 
 Both of the mentioned methods for dealing with infections are provided in the Hazm library.
 
@@ -302,19 +276,6 @@ normalized_train_data.head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -366,10 +327,10 @@ normalized_train_data.head()
 **Naïve Bayes classifiers** are simple probabilistic classifiers based on **applying Bayes' theorem with strong independence assumptions** between the features. They are among the simplest Bayesian network models.
 
 
-Given a problem instance to be classified, represented by a vector $ {x} =(x_{1},\ldots ,x_{n})$ representing some n features (independent variables), Naive Bayes assigns to this instance probabilities 
+Given a problem instance to be classified, represented by a vector $ {x} =(x_{1},\ldots ,x_{n})$ representing some n features (independent variables), Naive Bayes assigns to this instance probabilities
 
 $$P ( C_k ∣ x_1,\ldots, x_n )$$
-    
+
 for each of K possible outcomes or classes $C_k$. The instance is then classified as $C_k$, while $k$ is the class index which maximizes the above conditional probability.
 
 $$Class = \underset{C_k}{\operatorname{argmax}}P( C_k ∣ x_1,\ldots, x_n )\qquad(1)$$
@@ -416,13 +377,13 @@ We can use log to prevent underflow/precision issues:
 
 $$Class = \underset{C_k}{\operatorname{argmax}}\log(P(C_K)) + \sum_{i=0}^{n}{\log(P( x_i ∣ C_k ))}\qquad(6)$$
 
-# 4. Applying the Naïve Bayes Classifiers to the Bag of Words Model 
+# 4. Applying the Naïve Bayes Classifiers to the Bag of Words Model
 
 Here, we apply the Naïve Bayes classifying method for categorizing the dataset books based on their title and description. We consider each of the words in a preprocessed book information as features and design a classifier for separating books based on their meta informations.
 
 ## 4.1. Computing the Probability for each class
 
-To use equation (5) for determining the class which each book belongs to, we must first find the probability of occasion for each class ($P(C_k)$ for each class $k$) and also the probability of single words to appear in a class ($P(x_i|C_k)$ for each feature $i$ and class $k$). 
+To use equation (5) for determining the class which each book belongs to, we must first find the probability of occasion for each class ($P(C_k)$ for each class $k$) and also the probability of single words to appear in a class ($P(x_i|C_k)$ for each feature $i$ and class $k$).
 
 An approximation for the probability of occasion for each class ($P(C_k)$ for each class $k$) is as follow:
 
@@ -439,19 +400,6 @@ pd.DataFrame.from_dict(categories_probability, orient='index',columns=['Probabil
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -498,11 +446,11 @@ $$\hat{P}(x_i | C_k) = \frac {Times\ that\ x_i\ appeared\ in\ instances\ from\ C
 
 This is the right idea, but there's a small problem:  what if there's a word $x$ form a new description belong to class $C_k$ that we've not seen before in $C_k$ instances from train set? In that case, $P(x|C_k) = 0$, and the entire probability for the book to be labeled as $C_k$ will go to zero (see equation 5). Similarly, lots of new books out of our train set can easily get misclassified because only one word from their description is not in the true class words list.
 
-We would like our classifier to be robust to words it has not seen before. To address this problem, we must never let any word's probabilities to be zero, by smoothing the probabilities upwards. The solution is applying additive smoothing to the probabilities. 
+We would like our classifier to be robust to words it has not seen before. To address this problem, we must never let any word's probabilities to be zero, by smoothing the probabilities upwards. The solution is applying additive smoothing to the probabilities.
 
 ### 4.2.1 Additive Smoothing <a id="Q4"></a>
 
-In statistics, additive smoothing, also called Laplace smoothing or Lidstone smoothing, is a technique used to solve the problem of zero probability occasion. 
+In statistics, additive smoothing, also called Laplace smoothing or Lidstone smoothing, is a technique used to solve the problem of zero probability occasion.
 
 Given an observation $x  = ( x_1 , x_2 , … , x_d )$  from a multinomial distribution with $N $ trials, a smoothed version of the data gives the estimator:
 
@@ -569,7 +517,7 @@ def calc_freqs(n_grams_frequncy, data, categories, col_weights, n):
                     n_grams_frequncy[row["categories"]][n_gram] = column_weight
                 else:
                      n_grams_frequncy[row["categories"]][n_gram] += column_weight
-                
+
                 n_gram_counter_key = "sum-" + "-".join(row[column_name][word_index:word_index+n-1])
                 if n_gram_counter_key not in n_grams_frequncy[row["categories"]]:
                     n_grams_frequncy[row["categories"]][n_gram_counter_key] = column_weight
@@ -613,46 +561,46 @@ def plot_most_frequents(n_grams_frequncy, categories, common_frequents_threshold
         axes.set_title(get_display(reshape(category)))
         axes.bar(words,frequency)
         plt.show()
-    return 
-    
+    return
+
 n_grams_frequncy = calc_n_grams_frequency(normalized_train_data, categories, {"title":1, "description":1}, [1])
 plot_most_frequents(n_grams_frequncy, categories, common_frequents_threshold=300)
 ```
 
 
-    
-![png](output_40_0.png)
-    
+
+![png](./images/output_40_0.png)
 
 
 
-    
-![png](output_40_1.png)
-    
+
+
+![png](./images/output_40_1.png)
 
 
 
-    
-![png](output_40_2.png)
-    
+
+
+![png](./images/output_40_2.png)
 
 
 
-    
-![png](output_40_3.png)
-    
+
+
+![png](./images/output_40_3.png)
 
 
 
-    
-![png](output_40_4.png)
-    
+
+
+![png](./images/output_40_4.png)
 
 
 
-    
-![png](output_40_5.png)
-    
+
+
+![png](./images/output_40_5.png)
+
 
 
 ### 5.2 Most Frequent Bigrams and Trigrams
@@ -664,39 +612,39 @@ plot_most_frequents(n_grams_frequncy, categories, common_frequents_threshold=300
 ```
 
 
-    
-![png](output_42_0.png)
-    
+
+![png](./images/output_42_0.png)
 
 
 
-    
-![png](output_42_1.png)
-    
+
+
+![png](./images/output_42_1.png)
 
 
 
-    
-![png](output_42_2.png)
-    
+
+
+![png](./images/output_42_2.png)
 
 
 
-    
-![png](output_42_3.png)
-    
+
+
+![png](./images/output_42_3.png)
 
 
 
-    
-![png](output_42_4.png)
-    
+
+
+![png](./images/output_42_4.png)
 
 
 
-    
-![png](output_42_5.png)
-    
+
+
+![png](./images/output_42_5.png)
+
 
 
 # 6. Model Evaluation
@@ -725,7 +673,7 @@ $$Accuracy = \frac {Number\ of\ Instanses\ Classified\ Corrrectly} {Total\ Numbe
 
 **4- F1-Score** <a id="Q78"></a>
 
-Precision or Recall may not be enough as a single measurement standard. for example in a missile defence system that has a high precision, high precision means that each time the defence system is triggered, with a good probability the attack is real so its a system with low false positive rate that doesnt waste weapons and ... . but if system doesnt have a high recall it means that there are cases that a real attack has been done but system doesnt react. in this cases even one false negative can have irreparable damages so high precison isnt enough alone 
+Precision or Recall may not be enough as a single measurement standard. for example in a missile defence system that has a high precision, high precision means that each time the defence system is triggered, with a good probability the attack is real so its a system with low false positive rate that doesnt waste weapons and ... . but if system doesnt have a high recall it means that there are cases that a real attack has been done but system doesnt react. in this cases even one false negative can have irreparable damages so high precison isnt enough alone
 
 recall is also a good measurement if its used beside precision. for another example consider a medical diagnosis system with a high recall. high recall means that when a patient is sick the system diagnosis it corectly with a high probabilty and thats the behaviour that we need it most from this system. but if the system has a low precision it means that there are cases that are not sick but they are diagonosed as sick patients. in this situations the mental effect on patients, high costs of treatments (that are not required) and even side effects of medicines for a healthy person are the mistakes that are costly and dangerous. so high recall is nout enough alone in this system.
 
@@ -746,7 +694,7 @@ for multi class models we need a single metric that describe the efficiency of w
 2. __Weighted-F1__: When averaging the macro-F1, we gave equal weights to each class. We don’t have to do that: in weighted-average F1-score, or weighted-F1, we weight the F1-score of each class by the number of samples from that class. Similarly, we can compute __weighted precision__ and __weighted recall__
 
 
-3. __Micro-F1__: The last variant is the micro-averaged F1-score, or the micro-F1. To calculate the micro-F1, we first compute micro-averaged precision and micro-averaged recall over all the samples , and then combine the two. We look at all the samples together. In the multi-class case, we consider all the correctly predicted samples to be True Positives. since precision=recall in the micro-averaging case, they are also equal to their harmonic mean. moreover, this is also the classifier’s overall accuracy: the proportion of correctly classified samples out of all the samples. so 
+3. __Micro-F1__: The last variant is the micro-averaged F1-score, or the micro-F1. To calculate the micro-F1, we first compute micro-averaged precision and micro-averaged recall over all the samples , and then combine the two. We look at all the samples together. In the multi-class case, we consider all the correctly predicted samples to be True Positives. since precision=recall in the micro-averaging case, they are also equal to their harmonic mean. moreover, this is also the classifier’s overall accuracy: the proportion of correctly classified samples out of all the samples. so
 $$micro-F1 = micro-precision = micro-recall = accuracy$$
 
 
@@ -757,7 +705,7 @@ In classification tasks, a confusion matrix is a specific table layout that allo
 
 
 ```python
-def score(item, cols, category, n_grams_frequncy, n, common_frequent_words, alpha=0):  
+def score(item, cols, category, n_grams_frequncy, n, common_frequent_words, alpha=0):
     score = math.log(categories_probability[category])
     for col in cols:
         for word_index in range(len(item[col])):
@@ -794,7 +742,7 @@ def classify(item, cols, n_grams_frequncy, n_grams_weights, common_frequent_word
         if item_score > max_score:
             max_score=item_score
             max_category=category
-    
+
     return max_category
 ```
 
@@ -815,7 +763,7 @@ def get_stats(confusion_matrix):
     f1_sums=0
     for index,category in enumerate(categories):
         precision = confusion_matrix[index][index]/np.sum(confusion_matrix, axis=1)[index] if np.sum(confusion_matrix, axis=1)[index]>0 else 0
-        recall = confusion_matrix[index][index]/np.sum(confusion_matrix, axis=0)[index] if np.sum(confusion_matrix, axis=0)[index] > 0 else 0        
+        recall = confusion_matrix[index][index]/np.sum(confusion_matrix, axis=0)[index] if np.sum(confusion_matrix, axis=0)[index] > 0 else 0
         f1 = 2*(precision*recall)/(precision+recall) if (precision+recall)>0 else 0
         f1_sums += f1
         metrics[ index ][0] = "{:.1%}".format(precision)
@@ -826,7 +774,7 @@ def get_stats(confusion_matrix):
     print(("Accuracy: "+"{:.1%}".format(accuracy)).center(screen))
     macro_f1 = f1_sums / len(confusion_matrix)
     print(("Macro-F1 Score: "+"{:.1%}\n\n".format(macro_f1)).center(screen))
-    
+
 def run(train_data, test_data, lemmatization, stemming, filter_stop_words, filter_common_words, AS_alpha):
     normalized_train_data = normalize_data(train_data, ["title", "description"], lemmatization=lemmatization, stemming=stemming, filter_stop_words=filter_stop_words)
     normalized_test_data = normalize_data(test_data, ["title", "description"], lemmatization=lemmatization, stemming=stemming, filter_stop_words=filter_stop_words)
@@ -843,25 +791,12 @@ def run(train_data, test_data, lemmatization, stemming, filter_stop_words, filte
 
 
 ```python
-run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words=True, filter_common_words=False, AS_alpha=0)    
+run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words=True, filter_common_words=False, AS_alpha=0)
 
 ```
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -936,19 +871,6 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1000,35 +922,22 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 </div>
 
 
-                                    Accuracy: 28.7%                                 
+                                    Accuracy: 28.7%
                                 Macro-F1 Score: 28.7%
-    
-                                 
+
+
 
 
 ## 7.2 With Additive Smoothing
 
 
 ```python
-run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words=True, filter_common_words=False, AS_alpha=0.4)    
+run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words=True, filter_common_words=False, AS_alpha=0.4)
 
 ```
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1103,19 +1012,6 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1167,10 +1063,10 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 </div>
 
 
-                                    Accuracy: 84.0%                                 
+                                    Accuracy: 84.0%
                                 Macro-F1 Score: 83.9%
-    
-                                 
+
+
 
 
 <a id="Q5"></a> <a id="Q11"></a>
@@ -1183,24 +1079,11 @@ impressive increase in accuracy. without additive smoothing we can say that mode
 
 
 ```python
-run(train_data, test_data, lemmatization=False, stemming=False, filter_stop_words=True, filter_common_words=False, AS_alpha=0.4)    
+run(train_data, test_data, lemmatization=False, stemming=False, filter_stop_words=True, filter_common_words=False, AS_alpha=0.4)
 ```
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1275,19 +1158,6 @@ run(train_data, test_data, lemmatization=False, stemming=False, filter_stop_word
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1339,34 +1209,21 @@ run(train_data, test_data, lemmatization=False, stemming=False, filter_stop_word
 </div>
 
 
-                                    Accuracy: 57.3%                                 
+                                    Accuracy: 57.3%
                                 Macro-F1 Score: 57.0%
-    
-                                 
+
+
 
 
 ### 7.3.2 With Stemming
 
 
 ```python
-run(train_data, test_data, lemmatization=False, stemming=True, filter_stop_words=True, filter_common_words=False, AS_alpha=0.4)    
+run(train_data, test_data, lemmatization=False, stemming=True, filter_stop_words=True, filter_common_words=False, AS_alpha=0.4)
 ```
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1441,19 +1298,6 @@ run(train_data, test_data, lemmatization=False, stemming=True, filter_stop_words
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1505,34 +1349,21 @@ run(train_data, test_data, lemmatization=False, stemming=True, filter_stop_words
 </div>
 
 
-                                    Accuracy: 83.1%                                 
-                                 Macro-F1 Score: 82.9%                              
-    
-    
+                                    Accuracy: 83.1%
+                                 Macro-F1 Score: 82.9%
+
+
 
 
 ### 7.3.3 With Lemmization
 
 
 ```python
-run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words=True, filter_common_words=False, AS_alpha=0.4)    
+run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words=True, filter_common_words=False, AS_alpha=0.4)
 ```
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1607,19 +1438,6 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1671,10 +1489,10 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 </div>
 
 
-                                    Accuracy: 84.0%                                 
+                                    Accuracy: 84.0%
                                 Macro-F1 Score: 83.9%
-    
-                                 
+
+
 
 
 ### 7.3.4 Stemming vs. Lemmatization <a id="Q1-2"></a>
@@ -1684,7 +1502,7 @@ Both stemming and lemmatization increase the performance of the classification t
 Both stemming and lemmatization try to bring inflected words to the same form. Stemming uses an algorithmic approach to removing prefixes and suffixes. The result might not be an actual dictionary word. On the other hand, lemmatization uses a corpus and so the result is always a dictionary word.
 
 This principle difference makes stemming much faster than lemmatizers but also less accurate as it only uses an algorithm for reducing inflections and not a valid dictionary. Another highlight fact about lemmatization is that it can group larger words with similar meanings together and usually can reduce the diversity of words more than stemming.
-  
+
 
 ## 7.4 Stop Words And Common Frequent Words In All Classes
 
@@ -1692,24 +1510,11 @@ This principle difference makes stemming much faster than lemmatizers but also l
 
 
 ```python
-run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words=False, filter_common_words=False, AS_alpha=0.4)    
+run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words=False, filter_common_words=False, AS_alpha=0.4)
 ```
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1784,19 +1589,6 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1848,10 +1640,10 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 </div>
 
 
-                                    Accuracy: 82.7%                                 
+                                    Accuracy: 82.7%
                                 Macro-F1 Score: 82.6%
-    
-                                 
+
+
 
 
 #### 7.4.1 Removing Common Frequent Words With Stopwords
@@ -1863,19 +1655,6 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1950,19 +1729,6 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -2014,10 +1780,10 @@ run(train_data, test_data, lemmatization=True, stemming=False, filter_stop_words
 </div>
 
 
-                                    Accuracy: 83.3%                                 
+                                    Accuracy: 83.3%
                                 Macro-F1 Score: 83.2%
-    
-                                 
+
+
 
 
 as we see this method didnt help. the main reason can be that we removed stopwords and other words in this small train dataset are determinative and removing reduces accuracy because of small amount of discriminant words. maybe in projects with bigger train datasets this method be usefull.
@@ -2061,15 +1827,15 @@ for c in categories:
     prediction: جامعه‌شناسی
     ----------- Wrong Prediction 3 -----------
     text: انگشت جادویی-از ابتدای داستان:
-    
-    مزرعه کناری ما متعلق به آقا و خانم گریگ است. آنها دو فرزند دارند که هر دویشان پسر هستند. اسم آنها فیلیپ و ویلیام است. من بعضی وقت ها به مزرعه خانواده گریگ می‌روم و با پسرها بازی می‌کنم. 
-    
+
+    مزرعه کناری ما متعلق به آقا و خانم گریگ است. آنها دو فرزند دارند که هر دویشان پسر هستند. اسم آنها فیلیپ و ویلیام است. من بعضی وقت ها به مزرعه خانواده گریگ می‌روم و با پسرها بازی می‌کنم.
+
     من یک دخترهستم و هشت سال دارم. فیلیپ هم مثل من هشت سال دارد اما ویلیام سه سال از ما بزرگتر است. او ده ساله است.
-    
+
     چی ؟ اوه. حق با شماست. اشتباه شد.
-    
+
     او یازده ساله است.
-    
+
     هفته گذشته، اتفاق خیلی جالبی برای خانواده گریگ افتاد و من می‌خواهم آن را به بهترین شیوه‌ای که بلد هستم برایتان تعریف کنم.
     category: داستان کودک و نوجوانان
     prediction: رمان
@@ -2094,7 +1860,7 @@ As we can see in section 7.2 the classifier has weakest results in "رمان" an
 
 also we can see that in first wrong prediction the frequent word of description ("سازمان","کارمند","مدیر,"اقتصاد",...) are words that has high probabilty of occurness in category of "مدیریت و کسب و کار". the same applies to second wrong prediction; the frequent word of description("فرهنگ","جوامع","تمدن","هنر",...) are words that has high probabilty in category of occurness in "جامعه شناسی" cateogry.
 
-as we can see most of difficulties in classification come from the fact that only factor that we consider is probability of occurness of a word in a category. in cases like second wrong prediction we can see when classifier tries to work on a text that is a mixture of frequent words of two categories it faces some problems. methods like n-grams can help to involve context of writings in calculations but it doesnt solve all problems as in n-grams the history checking is limited to a small number. in summary the main assumption of naive bayes that all predictors (or features) are independent (or depend on a certain number of features), cause problems in many cases. 
+as we can see most of difficulties in classification come from the fact that only factor that we consider is probability of occurness of a word in a category. in cases like second wrong prediction we can see when classifier tries to work on a text that is a mixture of frequent words of two categories it faces some problems. methods like n-grams can help to involve context of writings in calculations but it doesnt solve all problems as in n-grams the history checking is limited to a small number. in summary the main assumption of naive bayes that all predictors (or features) are independent (or depend on a certain number of features), cause problems in many cases.
 
 
 ```python
